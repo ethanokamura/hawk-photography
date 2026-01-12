@@ -1,16 +1,398 @@
 ---
+import { Picture } from 'astro:assets';
+import '../styles/global.css';
 
+// Hero image
+import sfBridge from '../assets/sf_bridge.jpg';
+
+// Couple photos
+import couple01 from '../assets/couple_01.jpg';
+import couple02 from '../assets/couple_02.jpg';
+import couple03 from '../assets/couple_03.jpg';
+import couple04 from '../assets/couple_04.jpg';
+import couple06 from '../assets/couple_06.jpg';
+
+// Individual photos
+import individual1_01 from '../assets/individual1_01.jpg';
+import individual2_02 from '../assets/individual2_02.jpg';
+import individual3_01 from '../assets/individual3_01.jpg';
+import individual4_01 from '../assets/individual4_01.jpg';
+import individual5_04 from '../assets/individual5_04.jpg';
+import individual6_01 from '../assets/individual6_01.jpg';
+
+// Group photos
+import group1_01 from '../assets/group1_01.jpg';
+import group1_02 from '../assets/group1_02.jpg';
+import group2_01 from '../assets/group2_01.jpg';
+import group2_02 from '../assets/group2_02.jpg';
+import group3_01 from '../assets/group3_01.jpg';
+import group3_02 from '../assets/group3_02.jpg';
+
+
+// Photo collections
+const couplePhotos = [couple01, couple02, couple03, couple04, couple06];
+const individualPhotos = [individual1_01, individual2_02,individual3_01,individual4_01,individual5_04,individual6_01];
+const groupPhotos = [group1_01, group1_02, group2_01, group2_02, group3_01, group3_02];
+
+// Featured photos for the showcase section
+const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, couple03, individual2_02];
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content="Katy Hawk Photography - Capturing life's most precious moments with artistry and authenticity." />
+    <meta name="generator" content={Astro.generator} />
+    <title>Hawk Photography</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  </head>
+  
+  <body>
+    <!-- Grain overlay -->
+    <div class="grain"></div>
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-6 md:px-12 lg:px-20 ">
+      <div class="flex items-center justify-between max-w-[1800px] mx-auto">
+        <a href="#" class="font-display text-xl md:text-2xl tracking-wide text-charcoal fade-in">
+          Hawk Photography
+        </a>
+        <div class="hidden md:flex items-center gap-10 text-sm tracking-widest uppercase font-light">
+          <a href="#work" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-1">Work</a>
+          <a href="#couples" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-2">Couples</a>
+          <a href="#portraits" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-3">Portraits</a>
+          <a href="#groups" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-4">Groups</a>
+          <a href="#contact" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-5">Contact</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden text-charcoal">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 bg-cream/98 backdrop-blur-sm flex items-center justify-center opacity-0 invisible transition-all duration-300">
+      <div class="flex flex-col items-center gap-8 text-lg tracking-widest uppercase">
+        <a href="#work" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Work</a>
+        <a href="#couples" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Couples</a>
+        <a href="#portraits" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Portraits</a>
+        <a href="#groups" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Groups</a>
+        <a href="#contact" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Contact</a>
+      </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen w-full overflow-hidden">
+      <div class="absolute inset-0">
+        <Picture 
+          src={sfBridge} 
+          formats={['avif', 'webp']} 
+          alt="San Francisco Bridge - Featured photograph"
+          widths={[640, 1024, 1440, 1920]}
+          sizes="100vw"
+          class="w-full h-full object-cover"
+          quality={70}
+          loading="eager"
+        />
+      </div>
+      <div class="absolute inset-0 hero-gradient"></div>
+      <div class="absolute inset-0 flex flex-col items-center justify-end pb-20 md:pb-32 px-6 text-center">
+        <p class="text-gold text-xs md:text-sm tracking-[0.3em] uppercase mb-4 fade-in fade-in-delay-2">Photography</p>
+        <h1 class="font-display text-cream text-5xl md:text-7xl lg:text-8xl font-light tracking-tight mb-6 fade-in fade-in-delay-3">
+          Hawk Photography
+        </h1>
+        <p class="text-cream/70 text-base md:text-lg max-w-xl font-light leading-relaxed fade-in fade-in-delay-4">
+          Capturing life's most precious moments with artistry and authenticity
+        </p>
+
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-24 md:py-40 px-6 md:px-12 lg:px-20">
+      <div class="max-w-4xl mx-auto text-center section-reveal">
+        <p class="text-gold text-xs tracking-[0.3em] uppercase mb-6">About</p>
+        <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-light mb-8 leading-tight">
+          Every photograph tells a story waiting to be discovered
+        </h2>
+        <p class="text-charcoal/60 text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
+          Based in the San Francisco Bay Area, I specialize in capturing authentic moments—from intimate couple sessions to joyful group celebrations. My approach combines a documentary style with artistic composition, ensuring each image reflects the genuine emotion of the moment.
+        </p>
+      </div>
+    </section>
+
+    <!-- Featured Work Grid -->
+    <section id="work" class="py-16 md:py-24 px-6 md:px-12 lg:px-20">
+      <div class="max-w-[1800px] mx-auto">
+        <div class="text-center mb-16 section-reveal">
+          <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Portfolio</p>
+          <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-light">Featured Work</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 section-reveal">
+          {featuredPhotos.map((photo, index) => (
+            <div class={`gallery-item cursor-pointer ${index === 0 || index === 3 ? 'md:col-span-2 lg:col-span-1' : ''}`}>
+              <Picture 
+                src={photo}
+                formats={['avif', 'webp']}
+                alt={`Featured work ${index + 1}`}
+                widths={[400, 600, 800]}
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                class="w-full h-80 md:h-96 lg:h-[500px] object-cover"
+                quality={65}
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Couples Section -->
+    <section id="couples" class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-soft-white/30">
+      <div class="max-w-[1800px] mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 section-reveal">
+          <div>
+            <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Gallery</p>
+            <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-light">Couples</h2>
+          </div>
+          <p class="text-charcoal/50 text-sm mt-4 md:mt-0 max-w-md">
+            Intimate moments between two souls, captured with sensitivity and artistry
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {couplePhotos.map((photo, index) => (
+            <div class={`gallery-item cursor-pointer section-reveal ${index === 0 ? 'lg:row-span-2' : ''}`} style={`transition-delay: ${index * 0.1}s`}>
+              <Picture 
+                src={photo}
+                formats={['avif', 'webp']}
+                alt={`Couple photograph ${index + 1}`}
+                widths={[400, 600, 800]}
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                class={`w-full object-cover ${index === 0 ? 'h-80 md:h-[600px] lg:h-full' : 'h-80 md:h-[400px]'}`}
+                quality={65}
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Portrait Section -->
+    <section id="portraits" class="py-24 md:py-32 px-6 md:px-12 lg:px-20">
+      <div class="max-w-[1800px] mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 section-reveal">
+          <div>
+            <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Gallery</p>
+            <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-light">Portraits</h2>
+          </div>
+          <p class="text-charcoal/50 text-sm mt-4 md:mt-0 max-w-md">
+            Individual expressions that reveal the unique beauty within each person
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          {individualPhotos.map((photo, index) => (
+            <div class={`gallery-item cursor-pointer section-reveal ${index % 3 === 0 ? 'row-span-2' : ''}`} style={`transition-delay: ${index * 0.08}s`}>
+              <Picture 
+                src={photo}
+                formats={['avif', 'webp']}
+                alt={`Portrait photograph ${index + 1}`}
+                widths={[300, 500, 700]}
+                sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                class={`w-full object-cover ${index % 3 === 0 ? 'h-[400px] md:h-[600px] lg:h-full' : 'h-64 md:h-72 lg:h-80'}`}
+                quality={65}
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Groups Section -->
+    <section id="groups" class="py-24 md:py-32 px-6 md:px-12 lg:px-20 bg-soft-white/30">
+      <div class="max-w-[1800px] mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-16 section-reveal">
+          <div>
+            <p class="text-gold text-xs tracking-[0.3em] uppercase mb-4">Gallery</p>
+            <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-light">Groups</h2>
+          </div>
+          <p class="text-charcoal/50 text-sm mt-4 md:mt-0 max-w-md">
+            Celebrating connections, friendships, and the joy of togetherness
+          </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+          {groupPhotos.map((photo, index) => (
+            <div class={`gallery-item cursor-pointer section-reveal ${index === 0 || index === 5 || index === 10 ? 'md:col-span-2' : ''}`} style={`transition-delay: ${index * 0.06}s`}>
+              <Picture 
+                src={photo}
+                formats={['avif', 'webp']}
+                alt={`Group photograph ${index + 1}`}
+                widths={[400, 600, 800]}
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                class={`w-full object-cover ${index === 0 || index === 5 || index === 10 ? 'h-80 md:h-[450px]' : 'h-72 md:h-80'}`}
+                quality={65}
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-32 md:py-48 px-6 md:px-12 lg:px-20">
+      <div class="max-w-3xl mx-auto text-center section-reveal">
+        <p class="text-gold text-xs tracking-[0.3em] uppercase mb-6">Get in Touch</p>
+        <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-light mb-8">
+          Let's Create Something Beautiful
+        </h2>
+        <p class="text-charcoal/60 text-base md:text-lg leading-relaxed mb-12">
+          Whether you're graduating, planning a wedding, family gathering, or simply want to capture a special moment, I'd love to hear from you.
+        </p>
+        <a 
+          href="mailto:katyghawk@gmail.com" 
+          class="inline-flex items-center gap-3 px-8 py-4 border border-gold text-gold hover:bg-gold hover:text-cream transition-all duration-300 text-sm tracking-widest uppercase"
+        >
+          <span>Contact Me</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 md:px-12 lg:px-20 border-t border-charcoal/10">
+      <div class="max-w-[1800px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <p class="font-display text-xl tracking-wide">Hawk Photography</p>
+        <div class="flex items-center gap-8">
+          <a href="https://www.instagram.com/ph0tohawk/" target="_blank" class="text-charcoal/50 flex items-center gap-2 hover:text-gold transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            ph0tohawk
+          </a>
+        </div>
+        <p class="text-charcoal/40 text-sm">© 2026 All rights reserved</p>
+      </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+      <button id="lightbox-close" class="absolute top-6 right-6 text-charcoal/70 hover:text-charcoal transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <img id="lightbox-img" src="" alt="" class="max-w-[90vw] max-h-[90vh] object-contain" />
+    </div>
+
+    <script>
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      mobileMenuBtn?.addEventListener('click', () => {
+        mobileMenu?.classList.toggle('opacity-0');
+        mobileMenu?.classList.toggle('invisible');
+      });
+      
+      // Close mobile menu on link click
+      mobileMenu?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu?.classList.add('opacity-0', 'invisible');
+        });
+      });
+      
+      // Scroll reveal animation
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, observerOptions);
+      
+      document.querySelectorAll('.section-reveal').forEach(el => {
+        observer.observe(el);
+      });
+      
+      // Lightbox functionality
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+      const lightboxClose = document.getElementById('lightbox-close');
+      
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const img = item.querySelector('img');
+          if (img && lightboxImg && lightbox) {
+            // Get the highest resolution source
+            const srcset = img.getAttribute('srcset');
+            if (srcset) {
+              const sources = srcset.split(',').map(s => s.trim());
+              const lastSource = sources[sources.length - 1];
+              const highResUrl = lastSource.split(' ')[0];
+              lightboxImg.src = highResUrl;
+            } else {
+              lightboxImg.src = img.src;
+            }
+            lightboxImg.alt = img.alt;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+      
+      lightboxClose?.addEventListener('click', () => {
+        lightbox?.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+      
+      lightbox?.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Close lightbox on escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox?.classList.contains('active')) {
+          lightbox.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+      
+      // Navbar scroll effect
+      const nav = document.querySelector('nav');
+      let lastScrollY = window.scrollY;
+      
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 100) {
+          nav?.classList.add('bg-cream/80', 'backdrop-blur-md');
+        } else {
+          nav?.classList.remove('bg-cream/80', 'backdrop-blur-md');
+        }
+        lastScrollY = window.scrollY;
+      });
+    </script>
+  </body>
 </html>
