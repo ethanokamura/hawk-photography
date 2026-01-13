@@ -11,5 +11,4 @@ export default defineConfig({
     enabled: false,
   },
   site: 'https://hawk-photography.github.io',
-
 });
