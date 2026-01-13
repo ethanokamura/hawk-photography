@@ -9,5 +9,7 @@ export default defineConfig({
   },
   devToolbar: {
     enabled: false,
-  }
+  },
+  site: 'https://hawk-photography.github.io',
+
 });
