@@ -5,28 +5,30 @@ import '../styles/global.css';
 // Hero image
 import sfBridge from '../assets/landscape/golden-gate-bridge-01.jpg';
 
+// Featured photos
+
 // Couple photos
 import coupleArchway from '../assets/couples/couple-archway-01.jpg';
-import coupleBeachSunset from '../assets/couples/couple-beach-sunset-01.jpg';
-import coupleGrad01 from '../assets/couples/couple-graduation-01.jpg';
-import coupleGrad03 from '../assets/couples/couple-graduation-03.jpg';
+import coupleGrad01 from '../assets/couples/couple-graduation-07.jpg';
+import coupleGrad03 from '../assets/couples/couple-graduation-08.jpg';
 import coupleGrad04 from '../assets/couples/couple-graduation-04.jpg';
-import coupleGrad05 from '../assets/couples/couple-graduation-05.jpg';
+import coupleGrad05 from '../assets/couples/couple-graduation-02.jpg';
 import coupleGrad06 from '../assets/couples/couple-graduation-06.jpg';
 
 // Portrait photos
 import portraitMeadow from '../assets/portraits/portrait-meadow-01.jpg';
 import portraitOcean01 from '../assets/portraits/portrait-ocean-01.jpg';
-import portraitOcean02 from '../assets/portraits/portrait-ocean-02.jpg';
+import portraitOcean02 from '../assets/portraits/portrait-hillside-02.jpg';
 import portraitWildflowers from '../assets/portraits/portrait-wildflowers-01.jpg';
 import portraitSunsetBeach from '../assets/portraits/portrait-sunset-beach-01.jpg';
 import portraitCypress from '../assets/portraits/portrait-cypress-01.jpg';
+import portraitHillside from '../assets/portraits/portrait-hillside-04.jpg';
 
 // Group photos
 import groupOceanSunset from '../assets/groups/group-ocean-sunset-01.jpg';
 import groupBeachSunset01 from '../assets/groups/group-beach-sunset-01.jpg';
 import groupBeachSunset02 from '../assets/groups/group-beach-sunset-02.jpg';
-import groupCoastalRocks01 from '../assets/groups/group-coastal-rocks-01.jpg';
+import groupCoastalRocks01 from '../assets/groups/group-trees-01.jpg';
 import groupCoastalRocks02 from '../assets/groups/group-coastal-rocks-02.jpg';
 import groupCliffside01 from '../assets/groups/group-cliffside-01.jpg';
 import groupCliffside02 from '../assets/groups/group-cliffside-02.jpg';
@@ -51,20 +53,26 @@ function balanceColumns(images: { src: ImageMetadata; alt: string; units: number
   );
 }
 
-// Featured: 3 portrait + 3 landscape = 9 units (3 per column)
-const featuredPhotos = [
-  { src: coupleArchway, alt: 'Couple in stone archway', units: 2 },
-  { src: portraitMeadow, alt: 'Portrait in meadow', units: 2 },
-  { src: groupOceanSunset, alt: 'Group at ocean sunset', units: 2 },
-  { src: coupleBeachSunset, alt: 'Couple at beach sunset', units: 1 },
-  { src: groupCliffside01, alt: 'Group at cliffside', units: 1 },
-  { src: groupCoastalRocks01, alt: 'Group on coastal rocks', units: 1 },
+// Featured: 6 portrait = 12 units (4 per column)
+const featuredColumns = [
+  [
+    { src: portraitSunsetBeach, alt: 'Portrait at sunset beach', units: 2 },
+    { src: groupBeachSunset01, alt: 'Group at beach sunset', units: 2 },
+  ],
+  [
+    { src: portraitWildflowers, alt: 'Portrait among wildflowers', units: 2 },
+    { src: coupleGrad04, alt: 'Graduation couple', units: 2 },
+  ],
+  [
+    { src: portraitCypress, alt: 'Portrait by cypress tree', units: 2 },
+    { src: portraitHillside, alt: 'Portrait on hillside', units: 2 },
+  ],
 ];
 
 // Couples: 6 portrait = 12 units (4 per column)
 const couplePhotos = [
-  { src: coupleArchway, alt: 'Couple in stone archway', units: 2 },
   { src: coupleGrad01, alt: 'Graduation couple portrait', units: 2 },
+  { src: coupleArchway, alt: 'Couple in stone archway', units: 2 },
   { src: coupleGrad03, alt: 'Graduation celebration', units: 2 },
   { src: coupleGrad04, alt: 'Graduation couple', units: 2 },
   { src: coupleGrad05, alt: 'Graduation couple outdoors', units: 2 },
@@ -194,7 +202,7 @@ const groupPhotos = [
         </div>
         
         <div class="balanced-masonry section-reveal">
-          {balanceColumns(featuredPhotos).map((col) => (
+          {featuredColumns.map((col) => (
             <div class="masonry-col">
               {col.map((photo) => (
                 <div class={`gallery-item cursor-pointer ${photo.units === 2 ? 'portrait' : 'landscape'}`}>

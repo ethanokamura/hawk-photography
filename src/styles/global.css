@@ -189,9 +189,10 @@
 }
 
 /* Portrait height = 2 × landscape height + gap for pixel-perfect column balance */
+/* landscape height = col_width / 1.5, so portrait = 2 * (cqi / 1.5) + gap */
 @container (min-width: 0px) {
   .gallery-item.portrait {
-    height: calc(100cqi * 4 / 3 + 1.25rem);
+    height: calc(100cqi / 1.5 * 2 + 1.25rem);
   }
 }
 
