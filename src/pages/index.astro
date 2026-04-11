@@ -3,39 +3,94 @@ import { Picture } from 'astro:assets';
 import '../styles/global.css';
 
 // Hero image
-import sfBridge from '../assets/sf_bridge.jpg';
+import sfBridge from '../assets/landscape/golden-gate-bridge-01.jpg';
 
 // Couple photos
-import couple01 from '../assets/couple_01.jpg';
-import couple02 from '../assets/couple_02.jpg';
-import couple03 from '../assets/couple_03.jpg';
-import couple04 from '../assets/couple_04.jpg';
-import couple06 from '../assets/couple_06.jpg';
+import coupleArchway from '../assets/couples/couple-archway-01.jpg';
+import coupleBeachSunset from '../assets/couples/couple-beach-sunset-01.jpg';
+import coupleGrad01 from '../assets/couples/couple-graduation-01.jpg';
+import coupleGrad03 from '../assets/couples/couple-graduation-03.jpg';
+import coupleGrad04 from '../assets/couples/couple-graduation-04.jpg';
+import coupleGrad05 from '../assets/couples/couple-graduation-05.jpg';
+import coupleGrad06 from '../assets/couples/couple-graduation-06.jpg';
 
-// Individual photos
-import individual1_01 from '../assets/individual1_01.jpg';
-import individual2_02 from '../assets/individual2_02.jpg';
-import individual3_01 from '../assets/individual3_01.jpg';
-import individual4_01 from '../assets/individual4_01.jpg';
-import individual5_04 from '../assets/individual5_04.jpg';
-import individual6_01 from '../assets/individual6_01.jpg';
+// Portrait photos
+import portraitMeadow from '../assets/portraits/portrait-meadow-01.jpg';
+import portraitOcean01 from '../assets/portraits/portrait-ocean-01.jpg';
+import portraitOcean02 from '../assets/portraits/portrait-ocean-02.jpg';
+import portraitWildflowers from '../assets/portraits/portrait-wildflowers-01.jpg';
+import portraitSunsetBeach from '../assets/portraits/portrait-sunset-beach-01.jpg';
+import portraitCypress from '../assets/portraits/portrait-cypress-01.jpg';
 
 // Group photos
-import group1_01 from '../assets/group1_01.jpg';
-import group1_02 from '../assets/group1_02.jpg';
-import group2_01 from '../assets/group2_01.jpg';
-import group2_02 from '../assets/group2_02.jpg';
-import group3_01 from '../assets/group3_01.jpg';
-import group3_02 from '../assets/group3_02.jpg';
+import groupOceanSunset from '../assets/groups/group-ocean-sunset-01.jpg';
+import groupBeachSunset01 from '../assets/groups/group-beach-sunset-01.jpg';
+import groupBeachSunset02 from '../assets/groups/group-beach-sunset-02.jpg';
+import groupCoastalRocks01 from '../assets/groups/group-coastal-rocks-01.jpg';
+import groupCoastalRocks02 from '../assets/groups/group-coastal-rocks-02.jpg';
+import groupCliffside01 from '../assets/groups/group-cliffside-01.jpg';
+import groupCliffside02 from '../assets/groups/group-cliffside-02.jpg';
 
+// Portrait = 2 height units, Landscape = 1 height unit
+// Distribute images into columns with equal total units (greedy bin-packing)
+function balanceColumns(images: { src: ImageMetadata; alt: string; units: number }[], numCols = 3) {
+  const cols: typeof images[] = Array.from({ length: numCols }, () => []);
+  const colUnits = new Array(numCols).fill(0);
+  const sorted = [...images].sort((a, b) => b.units - a.units);
+  for (const img of sorted) {
+    let min = 0;
+    for (let i = 1; i < numCols; i++) {
+      if (colUnits[i] < colUnits[min]) min = i;
+    }
+    cols[min].push(img);
+    colUnits[min] += img.units;
+  }
+  // Alternate order: even cols portrait-first, odd cols landscape-first
+  return cols.map((col, i) =>
+    [...col].sort((a, b) => i % 2 === 0 ? b.units - a.units : a.units - b.units)
+  );
+}
 
-// Photo collections
-const couplePhotos = [couple01, couple02, couple03, couple04, couple06];
-const individualPhotos = [individual1_01, individual2_02,individual3_01,individual4_01,individual5_04,individual6_01];
-const groupPhotos = [group1_01, group1_02, group2_01, group2_02, group3_01, group3_02];
+// Featured: 3 portrait + 3 landscape = 9 units (3 per column)
+const featuredPhotos = [
+  { src: coupleArchway, alt: 'Couple in stone archway', units: 2 },
+  { src: portraitMeadow, alt: 'Portrait in meadow', units: 2 },
+  { src: groupOceanSunset, alt: 'Group at ocean sunset', units: 2 },
+  { src: coupleBeachSunset, alt: 'Couple at beach sunset', units: 1 },
+  { src: groupCliffside01, alt: 'Group at cliffside', units: 1 },
+  { src: groupCoastalRocks01, alt: 'Group on coastal rocks', units: 1 },
+];
 
-// Featured photos for the showcase section
-const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, couple03, individual2_02];
+// Couples: 6 portrait = 12 units (4 per column)
+const couplePhotos = [
+  { src: coupleArchway, alt: 'Couple in stone archway', units: 2 },
+  { src: coupleGrad01, alt: 'Graduation couple portrait', units: 2 },
+  { src: coupleGrad03, alt: 'Graduation celebration', units: 2 },
+  { src: coupleGrad04, alt: 'Graduation couple', units: 2 },
+  { src: coupleGrad05, alt: 'Graduation couple outdoors', units: 2 },
+  { src: coupleGrad06, alt: 'Graduation couple portrait', units: 2 },
+];
+
+// Portraits: 6 portrait = 12 units (4 per column)
+const portraitPhotos = [
+  { src: portraitMeadow, alt: 'Portrait in meadow', units: 2 },
+  { src: portraitOcean01, alt: 'Portrait by the ocean', units: 2 },
+  { src: portraitWildflowers, alt: 'Portrait among wildflowers', units: 2 },
+  { src: portraitSunsetBeach, alt: 'Portrait at sunset beach', units: 2 },
+  { src: portraitOcean02, alt: 'Portrait by the ocean', units: 2 },
+  { src: portraitCypress, alt: 'Portrait by cypress tree', units: 2 },
+];
+
+// Groups: 2 portrait + 5 landscape = 9 units (3 per column)
+const groupPhotos = [
+  { src: groupOceanSunset, alt: 'Group at ocean sunset', units: 2 },
+  { src: groupBeachSunset01, alt: 'Group at beach sunset', units: 2 },
+  { src: groupCoastalRocks01, alt: 'Group on coastal rocks', units: 1 },
+  { src: groupCliffside01, alt: 'Group at cliffside', units: 1 },
+  { src: groupBeachSunset02, alt: 'Group at beach sunset', units: 1 },
+  { src: groupCoastalRocks02, alt: 'Group on coastal rocks', units: 1 },
+  { src: groupCliffside02, alt: 'Group at cliffside', units: 1 },
+];
 ---
 
 <html lang="en">
@@ -60,15 +115,16 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 right-0 z-50 px-6 py-6 md:px-12 lg:px-20 ">
       <div class="flex items-center justify-between max-w-[1800px] mx-auto">
-        <a href="#" class="font-display text-xl md:text-2xl tracking-wide text-charcoal fade-in">
-          Hawk Photography
+        <a href="/" class="flex items-center gap-3 fade-in">
+          <img src="/logo.svg" alt="Hawk Photography logo" class="w-8 h-8 md:w-9 md:h-9" />
+          <span class="font-display text-xl md:text-2xl tracking-wide text-charcoal">Hawk Photography</span>
         </a>
         <div class="hidden md:flex items-center gap-10 text-sm tracking-widest uppercase font-light">
           <a href="#work" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-1">Work</a>
           <a href="#couples" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-2">Couples</a>
           <a href="#portraits" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-3">Portraits</a>
           <a href="#groups" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-4">Groups</a>
-          <a href="#contact" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-5">Contact</a>
+          <a href="/pricing" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors fade-in fade-in-delay-5">Pricing</a>
         </div>
         <button id="mobile-menu-btn" class="md:hidden text-charcoal">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -85,7 +141,7 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
         <a href="#couples" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Couples</a>
         <a href="#portraits" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Portraits</a>
         <a href="#groups" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Groups</a>
-        <a href="#contact" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Contact</a>
+        <a href="/pricing" class="nav-link text-charcoal/80 hover:text-charcoal transition-colors">Pricing</a>
       </div>
     </div>
 
@@ -137,19 +193,23 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
           <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-light">Featured Work</h2>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 section-reveal">
-          {featuredPhotos.map((photo, index) => (
-            <div class={`gallery-item cursor-pointer ${index === 0 || index === 3 ? 'md:col-span-2 lg:col-span-1' : ''}`}>
-              <Picture 
-                src={photo}
-                formats={['avif', 'webp']}
-                alt={`Featured work ${index + 1}`}
-                widths={[400, 600, 800]}
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                class="w-full h-80 md:h-96 lg:h-[500px] object-cover"
-                quality={65}
-                loading="lazy"
-              />
+        <div class="balanced-masonry section-reveal">
+          {balanceColumns(featuredPhotos).map((col) => (
+            <div class="masonry-col">
+              {col.map((photo) => (
+                <div class={`gallery-item cursor-pointer ${photo.units === 2 ? 'portrait' : 'landscape'}`}>
+                  <Picture
+                    src={photo.src}
+                    formats={['avif', 'webp']}
+                    alt={photo.alt}
+                    widths={[400, 600, 800]}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    class="w-full h-full object-cover"
+                    quality={65}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -169,19 +229,23 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
           </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {couplePhotos.map((photo, index) => (
-            <div class={`gallery-item cursor-pointer section-reveal ${index === 0 ? 'lg:row-span-2' : ''}`} style={`transition-delay: ${index * 0.1}s`}>
-              <Picture 
-                src={photo}
-                formats={['avif', 'webp']}
-                alt={`Couple photograph ${index + 1}`}
-                widths={[400, 600, 800]}
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                class={`w-full object-cover ${index === 0 ? 'h-80 md:h-[600px] lg:h-full' : 'h-80 md:h-[400px]'}`}
-                quality={65}
-                loading="lazy"
-              />
+        <div class="balanced-masonry section-reveal">
+          {balanceColumns(couplePhotos).map((col) => (
+            <div class="masonry-col">
+              {col.map((photo) => (
+                <div class={`gallery-item cursor-pointer ${photo.units === 2 ? 'portrait' : 'landscape'}`}>
+                  <Picture
+                    src={photo.src}
+                    formats={['avif', 'webp']}
+                    alt={photo.alt}
+                    widths={[400, 600, 800]}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    class="w-full h-full object-cover"
+                    quality={65}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -201,19 +265,23 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
           </p>
         </div>
         
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-          {individualPhotos.map((photo, index) => (
-            <div class={`gallery-item cursor-pointer section-reveal ${index % 3 === 0 ? 'row-span-2' : ''}`} style={`transition-delay: ${index * 0.08}s`}>
-              <Picture 
-                src={photo}
-                formats={['avif', 'webp']}
-                alt={`Portrait photograph ${index + 1}`}
-                widths={[300, 500, 700]}
-                sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                class={`w-full object-cover ${index % 3 === 0 ? 'h-[400px] md:h-[600px] lg:h-full' : 'h-64 md:h-72 lg:h-80'}`}
-                quality={65}
-                loading="lazy"
-              />
+        <div class="balanced-masonry section-reveal">
+          {balanceColumns(portraitPhotos).map((col) => (
+            <div class="masonry-col">
+              {col.map((photo) => (
+                <div class={`gallery-item cursor-pointer ${photo.units === 2 ? 'portrait' : 'landscape'}`}>
+                  <Picture
+                    src={photo.src}
+                    formats={['avif', 'webp']}
+                    alt={photo.alt}
+                    widths={[300, 500, 700]}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    class="w-full h-full object-cover"
+                    quality={65}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
@@ -233,27 +301,31 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
           </p>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-          {groupPhotos.map((photo, index) => (
-            <div class={`gallery-item cursor-pointer section-reveal ${index === 0 || index === 5 || index === 10 ? 'md:col-span-2' : ''}`} style={`transition-delay: ${index * 0.06}s`}>
-              <Picture 
-                src={photo}
-                formats={['avif', 'webp']}
-                alt={`Group photograph ${index + 1}`}
-                widths={[400, 600, 800]}
-                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                class={`w-full object-cover ${index === 0 || index === 5 || index === 10 ? 'h-80 md:h-[450px]' : 'h-72 md:h-80'}`}
-                quality={65}
-                loading="lazy"
-              />
+        <div class="balanced-masonry section-reveal">
+          {balanceColumns(groupPhotos).map((col) => (
+            <div class="masonry-col">
+              {col.map((photo) => (
+                <div class={`gallery-item cursor-pointer ${photo.units === 2 ? 'portrait' : 'landscape'}`}>
+                  <Picture
+                    src={photo.src}
+                    formats={['avif', 'webp']}
+                    alt={photo.alt}
+                    widths={[400, 600, 800]}
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    class="w-full h-full object-cover"
+                    quality={65}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-32 md:py-48 px-6 md:px-12 lg:px-20">
+    <!-- CTA Section -->
+    <section class="py-32 md:py-48 px-6 md:px-12 lg:px-20">
       <div class="max-w-3xl mx-auto text-center section-reveal">
         <p class="text-gold text-xs tracking-[0.3em] uppercase mb-6">Get in Touch</p>
         <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-light mb-8">
@@ -262,11 +334,11 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
         <p class="text-charcoal/60 text-base md:text-lg leading-relaxed mb-12">
           Whether you're graduating, planning a wedding, family gathering, or simply want to capture a special moment, I'd love to hear from you.
         </p>
-        <a 
-          href="mailto:katyghawk@gmail.com" 
+        <a
+          href="/pricing"
           class="inline-flex items-center gap-3 px-8 py-4 border border-gold text-gold hover:bg-gold hover:text-cream transition-all duration-300 text-sm tracking-widest uppercase"
         >
-          <span>Contact Me</span>
+          <span>View Pricing</span>
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
@@ -277,7 +349,10 @@ const featuredPhotos = [couple01, individual1_01, group1_01, individual5_04, cou
     <!-- Footer -->
     <footer class="py-12 px-6 md:px-12 lg:px-20 border-t border-charcoal/10">
       <div class="max-w-[1800px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        <p class="font-display text-xl tracking-wide">Hawk Photography</p>
+        <a href="/" class="flex items-center gap-3">
+          <img src="/logo.svg" alt="Hawk Photography logo" class="w-7 h-7" />
+          <span class="font-display text-xl tracking-wide">Hawk Photography</span>
+        </a>
         <div class="flex items-center gap-8">
           <a href="https://www.instagram.com/ph0tohawk/" target="_blank" class="text-charcoal/50 flex items-center gap-2 hover:text-gold transition-colors">
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
